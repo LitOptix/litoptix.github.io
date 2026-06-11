@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Live Demo — LitOptix MedChron AI</title>
+<meta name="description" content="Interactive demo of LitOptix MedChron AI — sortable medical chronology, premium insights, and the records chatbot. All data fictional." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --space-0:#05030f; --space-1:#0b0a1f; --navy:#0b1437; --purple:#3b1d6e; --purple-2:#5b2a9e;
+  --cyan:#22d3ee; --cyan-soft:#67e8f9; --silver:#c7cbd6; --silver-2:#8c93a8;
+  --panel:rgba(20,22,48,.72); --panel-2:rgba(30,33,66,.6);
+  --bd:rgba(120,140,220,.18); --bd-hi:rgba(110,230,255,.45);
+  --text:#e8ecf8; --dim:#9aa3c0; --warn:#ffcf6b; --pre:#6b78b8; --r:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh;
+  background:
+    radial-gradient(1200px 700px at 80% -10%,rgba(91,42,158,.45),transparent 60%),
+    radial-gradient(900px 600px at -10% 10%,rgba(34,211,238,.10),transparent 55%),
+    linear-gradient(180deg,var(--space-1) 0%,var(--space-0) 100%);
+  background-attachment:fixed;}
+a{color:var(--cyan);text-decoration:none}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+@media(max-width:760px){.app{grid-template-columns:1fr}.sidebar{position:static!important;height:auto!important;flex-direction:row!important;flex-wrap:wrap;align-items:center}}
+
+.sidebar{background:linear-gradient(180deg,rgba(11,20,55,.85),rgba(8,8,24,.85));border-right:1px solid var(--bd);
+  padding:20px 14px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh}
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.globe{width:32px;height:32px;border-radius:50%;flex:0 0 auto;position:relative;
+  background:radial-gradient(circle at 35% 30%,#6fe9ff 0%,#1f8bbd 35%,#123a6b 70%,#0a1b3a 100%);
+  box-shadow:0 0 16px rgba(34,211,238,.7),inset -3px -5px 9px rgba(0,0,0,.5)}
+.wordmark{font-family:Orbitron;font-weight:800;font-size:15px;color:#fff}
+.wordmark b{color:var(--cyan)}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;color:var(--dim);cursor:pointer;font-size:13px;font-weight:500;border:1px solid transparent;user-select:none}
+.nav-item:hover{background:var(--panel-2);color:#fff}
+.nav-item.active{background:linear-gradient(90deg,rgba(34,211,238,.16),rgba(59,29,110,.25));color:#fff;border-color:var(--bd-hi)}
+.demo-badge{margin-top:auto;background:rgba(255,207,107,.1);border:1px solid rgba(255,207,107,.35);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--warn);line-height:1.5}
+.back{font-size:12px;color:var(--silver-2);margin-top:10px}
+
+.main{padding:26px 30px;max-width:1200px;width:100%}
+.eyebrow{font-size:10.5px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:4px}
+h1{font-family:Orbitron;font-size:22px;margin:0 0 2px;color:#fff}
+.sub{color:var(--dim);font-size:12.5px;margin-bottom:20px}
+
+.panel{background:var(--panel);border:1px solid var(--bd);border-radius:var(--r);padding:18px 20px;backdrop-filter:blur(8px)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.stat{text-align:center;background:var(--panel);border:1px solid var(--bd);border-radius:var(--r);padding:14px}
+.stat .n{font-family:Orbitron;font-size:24px;color:#fff;text-shadow:0 0 14px rgba(34,211,238,.35)}
+.stat .l{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1.4px;margin-top:3px}
+
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+input,select{background:rgba(5,8,22,.6);border:1px solid var(--bd);color:var(--text);border-radius:9px;padding:8px 11px;font-size:12.5px;font-family:inherit;outline:none}
+input:focus,select:focus{border-color:var(--bd-hi)}
+.count{margin-left:auto;color:var(--dim);font-size:12px}
+
+.chron-wrap{overflow:auto;border-radius:var(--r);border:1px solid var(--bd)}
+table{width:100%;border-collapse:collapse;font-size:12.5px;background:rgba(8,10,26,.5)}
+th{position:sticky;top:0;text-align:left;padding:10px 12px;font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:#dfe6ff;cursor:pointer;white-space:nowrap;background:linear-gradient(180deg,var(--purple),#2a1550);border-bottom:1px solid var(--bd-hi);z-index:2}
+th:hover{color:var(--cyan)}
+td{padding:10px 12px;border-bottom:1px solid rgba(120,140,220,.10);vertical-align:top;line-height:1.5}
+tbody tr:hover td{background:rgba(34,211,238,.045)}
+.divider td{background:linear-gradient(90deg,rgba(11,20,55,.95),rgba(59,29,110,.6));text-align:center;font-family:Orbitron;font-size:11px;letter-spacing:2px;color:#fff;padding:8px}
+.divider.loss td{background:linear-gradient(90deg,var(--purple-2),var(--cyan));color:#051018;font-weight:700}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10.5px;font-weight:600;white-space:nowrap}
+.pill.pre{background:rgba(107,120,184,.18);color:#aab6ee;border:1px solid rgba(107,120,184,.4)}
+.pill.post{background:rgba(34,211,238,.14);color:var(--cyan-soft);border:1px solid rgba(34,211,238,.4)}
+.pill.type{background:rgba(91,42,158,.22);color:#c9b3ff;border:1px solid rgba(91,42,158,.4)}
+.pill.flag{background:rgba(255,207,107,.14);color:var(--warn);border:1px solid rgba(255,207,107,.4)}
+.bates{color:var(--silver-2);font-family:ui-monospace,monospace;font-size:11px}
+.prov{color:#fff;font-weight:600}
+.parts{color:var(--dim);font-size:11px}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+h3{font-size:14px;color:var(--silver);margin:0 0 10px}
+.item{display:flex;gap:10px;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;margin-bottom:8px;background:var(--panel-2);font-size:12.5px;line-height:1.5}
+.item .meta{color:var(--dim);font-size:11px;margin-top:2px}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:8px 12px;font-size:12.5px}
+.kv .k{color:var(--dim)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+
+.chat-log{display:flex;flex-direction:column;gap:12px;max-height:48vh;overflow:auto;padding-right:4px;margin-bottom:14px}
+.msg{max-width:86%;padding:11px 14px;border-radius:13px;font-size:13px;line-height:1.55;white-space:pre-wrap}
+.msg.user{align-self:flex-end;background:linear-gradient(90deg,var(--cyan),#1aa6c9);color:#04222b;border-bottom-right-radius:4px;font-weight:600}
+.msg.ai{align-self:flex-start;background:var(--panel-2);border:1px solid var(--bd);border-bottom-left-radius:4px}
+.msg.ai .cite{color:var(--cyan-soft);font-family:ui-monospace,monospace;font-size:11.5px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.chip{padding:7px 12px;border-radius:999px;font-size:12px;border:1px solid var(--bd);color:var(--dim);cursor:pointer;background:var(--panel-2)}
+.chip:hover{border-color:var(--bd-hi);color:#fff}
+.tab{display:none}.tab.active{display:block}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo"><div class="globe"></div><div class="wordmark">LIT<b>OPTIX</b></div></div>
+    <div class="nav-item" data-tab="overview">⬡ &nbsp;Case Overview</div>
+    <div class="nav-item active" data-tab="chronology">☰ &nbsp;Chronology</div>
+    <div class="nav-item" data-tab="insights">✦ &nbsp;Premium Insights</div>
+    <div class="nav-item" data-tab="chat">✸ &nbsp;AI Chatbot</div>
+    <div class="demo-badge">▶ INTERACTIVE DEMO<br/>All data is fictional. The full app runs privately on your own machine — records never leave it.</div>
+    <div class="back">← <a href="index.html">Back to litoptix.github.io</a></div>
+  </aside>
+
+  <main class="main">
+    <div class="eyebrow">JORDAN SAMPLE · DOL 2024-03-15 · DEMO</div>
+    <h1>Sample v. Defendant</h1>
+    <div class="sub">14 events · 5 records · interactive demo with fictional data</div>
+
+    <!-- OVERVIEW -->
+    <div class="tab" id="tab-overview">
+      <div class="stats">
+        <div class="stat"><div class="n">14</div><div class="l">Events</div></div>
+        <div class="stat"><div class="n" style="color:var(--pre)">4</div><div class="l">Pre-incident</div></div>
+        <div class="stat"><div class="n" style="color:var(--cyan)">10</div><div class="l">Post-incident</div></div>
+        <div class="stat"><div class="n">5</div><div class="l">Records</div></div>
+      </div>
+      <div class="grid2">
+        <div class="panel">
+          <h3>Case Details</h3>
+          <div class="kv">
+            <div class="k">Plaintiff</div><div>Jordan Sample</div>
+            <div class="k">DOB</div><div>1985-06-02</div>
+            <div class="k">Date of Loss</div><div>2024-03-15 (motor-vehicle collision)</div>
+            <div class="k">Complaints</div><div>low back, left leg, neck</div>
+            <div class="k">Bates Range</div><div>LFM00001 – HOS00250</div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Providers (5)</h3>
+          <div class="tags">
+            <span class="pill type">Lakeside Family Medicine</span>
+            <span class="pill type">Bayview Imaging Center</span>
+            <span class="pill type">St. Mercy Emergency Dept.</span>
+            <span class="pill type">Coastal Physical Therapy</span>
+            <span class="pill type">Harborview Ortho &amp; Spine</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHRONOLOGY -->
+    <div class="tab active" id="tab-chronology">
+      <div class="toolbar">
+        <input id="q" placeholder="🔍 Search all fields…" style="width:200px" />
+        <select id="fpp"><option value="">Pre/Post: All</option><option value="pre">Pre-incident</option><option value="post">Post-incident</option></select>
+        <select id="ftype"><option value="">Type: All</option><option>Office Visit</option><option>Imaging</option><option>ER Visit</option><option>Physical Therapy</option><option>Surgery</option><option>Pharmacy</option></select>
+        <span class="count" id="count"></span>
+      </div>
+      <div class="chron-wrap">
+        <table>
+          <thead><tr>
+            <th data-k="prePost">P/P</th><th data-k="provider">Service Provider ▲▼</th><th data-k="dos">DOS ▲▼</th>
+            <th data-k="type">Type</th><th>Complaints / Procedures / Impressions / Findings</th><th>Notes</th><th>Bates</th>
+          </tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- INSIGHTS -->
+    <div class="tab" id="tab-insights">
+      <div class="stats">
+        <div class="stat"><div class="n">3</div><div class="l">Causation flags</div></div>
+        <div class="stat"><div class="n">1</div><div class="l">Treatment gap ≥60d</div></div>
+        <div class="stat"><div class="n">2</div><div class="l">Pre-existing refs</div></div>
+        <div class="stat"><div class="n">1</div><div class="l">Missing records</div></div>
+      </div>
+      <div class="grid2">
+        <div class="panel"><h3>⚑ Causation Flags</h3>
+          <div class="item"><div>New L4-5 herniation on 04/02/2024 MRI vs. clean 11/19/2023 baseline — core causation evidence.<div class="meta">Bayview Imaging · BIC00019</div></div></div>
+          <div class="item"><div>ER presentation same day as collision documents immediate radicular onset.<div class="meta">St. Mercy ED · 03/15/2024 · SME00112</div></div></div>
+          <div class="item"><div>Surgery at the same level (L4-5) shown newly herniated post-incident.<div class="meta">Harborview Ortho · 07/28/2024 · HOS00233</div></div></div>
+        </div>
+        <div class="panel"><h3>⏱ Treatment Gap Analysis</h3>
+          <div class="item"><span class="pill flag">52 days</span><div>05/10/2024 → 07/01/2024<div class="meta">Coastal PT → Harborview Ortho consult — expect defense argument; plaintiff cites scheduling delay</div></div></div>
+          <h3 style="margin-top:16px">🔎 Possible Missing Records</h3>
+          <div class="item"><div>ESI procedure notes referenced in ortho consult but no pain-management records produced.<div class="meta">Referenced at HOS00219</div></div></div>
+        </div>
+        <div class="panel" style="grid-column:1/-1"><h3>🦴 Body Parts — Pre vs Post</h3>
+          <div class="kv">
+            <div class="k">Pre-incident</div><div class="tags"><span class="pill pre">low back (mild)</span></div>
+            <div class="k">Post-incident</div><div class="tags"><span class="pill post">low back</span><span class="pill post">left leg</span><span class="pill post">neck</span></div>
+            <div class="k" style="color:var(--warn)">Overlap</div><div class="tags"><span class="pill flag">low back — degenerative baseline vs. acute herniation is the battleground</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAT -->
+    <div class="tab" id="tab-chat">
+      <div class="panel">
+        <h3>✸ Records Chatbot <span style="color:var(--dim);font-weight:400;font-size:11px">— 14 events in context · answers cite provider, DOS, Bates</span></h3>
+        <div class="chips" id="chips"></div>
+        <div class="chat-log" id="log">
+          <div class="msg ai">Ask me anything about Jordan Sample's records. I answer only from the chronology and cite my sources. (Demo: pick a suggested question.)</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+// ---------- fictional demo data ----------
+const EVENTS=[
+ {pp:'pre', prov:'Lakeside Family Medicine', dos:'2022-08-02', dosRaw:'08/02/2022', type:'Office Visit', parts:'low back',
+  sum:'Annual physical. Occasional low-back stiffness after yard work; no radicular symptoms; no imaging ordered.', notes:'', bates:'LFM00041'},
+ {pp:'pre', prov:'Lakeside Family Medicine', dos:'2023-02-11', dosRaw:'02/11/2023', type:'Office Visit', parts:'low back',
+  sum:'Follow-up. Back stiffness resolved with OTC NSAIDs. Normal gait and strength.', notes:'', bates:'LFM00046'},
+ {pp:'pre', prov:'Bayview Imaging Center', dos:'2023-11-19', dosRaw:'11/19/2023', type:'Imaging', parts:'lumbar',
+  sum:'MRI lumbar spine: mild L4-5 disc desiccation. No herniation, no canal or foraminal stenosis.', notes:'Baseline study', bates:'BIC00007', flag:'Pre-existing baseline — clean'},
+ {pp:'pre', prov:'Walgreen Pharmacy (demo)', dos:'2023-11-22', dosRaw:'11/22/2023', type:'Pharmacy', parts:'',
+  sum:'Naproxen 500 mg fill following imaging visit.', notes:'', bates:'PHX00003'},
+ {pp:'post', prov:'St. Mercy Emergency Dept.', dos:'2024-03-15', dosRaw:'03/15/2024', type:'ER Visit', parts:'low back, left leg',
+  sum:'MVC same day. Severe low-back pain radiating to left leg 9/10. XR lumbar: no fracture. Discharged with muscle relaxants; ortho referral.', notes:'', bates:'SME00112', flag:'Immediate post-incident radicular onset'},
+ {pp:'post', prov:'Lakeside Family Medicine', dos:'2024-03-22', dosRaw:'03/22/2024', type:'Office Visit', parts:'low back, left leg, neck',
+  sum:'Post-MVC follow-up. Persistent radiating left-leg pain, new neck stiffness. Positive straight-leg raise on left. MRI ordered.', notes:'', bates:'LFM00052'},
+ {pp:'post', prov:'Bayview Imaging Center', dos:'2024-04-02', dosRaw:'04/02/2024', type:'Imaging', parts:'lumbar',
+  sum:'MRI lumbar spine: NEW L4-5 posterior disc herniation contacting the left L5 nerve root; moderate canal stenosis. Compare 11/19/2023 — previously no herniation.', notes:'Key study', bates:'BIC00019', flag:'New pathology vs. baseline'},
+ {pp:'post', prov:'Coastal Physical Therapy', dos:'2024-04-10', dosRaw:'04/10/2024', type:'Physical Therapy', parts:'low back, left leg',
+  sum:'PT eval. Pain 8/10. Plan: 12 sessions over 6 weeks — therapeutic exercise, manual therapy, traction.', notes:'', bates:'CPT00004'},
+ {pp:'post', prov:'Coastal Physical Therapy', dos:'2024-05-10', dosRaw:'05/10/2024', type:'Physical Therapy', parts:'low back, left leg',
+  sum:'Session 12 of 12. Pain improved to 6/10 but radicular symptoms persist with sitting >30 min. PT discharged; ortho consult recommended.', notes:'', bates:'CPT00021'},
+ {pp:'post', prov:'Harborview Ortho & Spine', dos:'2024-07-01', dosRaw:'07/01/2024', type:'Office Visit', parts:'low back, left leg',
+  sum:'Ortho consult after scheduling delay. Failed conservative care. Reviews 4/2 MRI. Recommends L4-5 microdiscectomy; discusses ESI alternative.', notes:'52-day gap from PT discharge', bates:'HOS00219', flag:'Treatment gap 05/10 → 07/01 (52 days)'},
+ {pp:'post', prov:'Harborview Ortho & Spine', dos:'2024-07-28', dosRaw:'07/28/2024', type:'Surgery', parts:'lumbar',
+  sum:'L4-5 microdiscectomy. Findings: extruded disc fragment compressing left L5 root, consistent with imaging. No complications.', notes:'', bates:'HOS00233'},
+ {pp:'post', prov:'Coastal Physical Therapy', dos:'2024-08-20', dosRaw:'08/20/2024', type:'Physical Therapy', parts:'low back',
+  sum:'Post-op PT begins. Radicular leg pain resolved; residual lumbar soreness 3/10.', notes:'', bates:'CPT00029'},
+ {pp:'post', prov:'Harborview Ortho & Spine', dos:'2024-10-09', dosRaw:'10/09/2024', type:'Office Visit', parts:'low back',
+  sum:'8-week post-op. Excellent result; pain 2/10. Permanent lifting restriction 25 lbs; 5% whole-person impairment assigned.', notes:'Impairment rating', bates:'HOS00247'},
+ {pp:'post', prov:'Walgreen Pharmacy (demo)', dos:'2024-10-12', dosRaw:'10/12/2024', type:'Pharmacy', parts:'',
+  sum:'Final fill: cyclobenzaprine taper.', notes:'', bates:'PHX00011'},
+];
+
+const CHAT={
+ 'When was the first lumbar complaint?':
+  'The first lumbar complaint appears PRE-incident: occasional low-back stiffness after yard work, with no radicular symptoms (Lakeside Family Medicine, 08/02/2022, LFM00041). The first POST-incident lumbar complaint is the same-day ER presentation with severe low back pain radiating to the left leg, 9/10 (St. Mercy ED, 03/15/2024, SME00112).',
+ 'What records support surgery?':
+  'The causation chain has four links: (1) clean pre-incident baseline — MRI with no herniation (Bayview Imaging, 11/19/2023, BIC00007); (2) same-day ER visit with new radicular symptoms (St. Mercy ED, 03/15/2024, SME00112); (3) new L4-5 herniation contacting the left L5 root (Bayview Imaging, 04/02/2024, BIC00019); (4) operative findings of an extruded L4-5 fragment compressing that root (Harborview Ortho, 07/28/2024, HOS00233).',
+ 'Summarize gaps in treatment.':
+  'One gap meets the 60-day-adjacent threshold: 52 days between PT discharge (Coastal PT, 05/10/2024, CPT00021) and the ortho consult (Harborview, 07/01/2024, HOS00219). The ortho note attributes it to scheduling delay — expect the defense to argue symptom resolution; the PT discharge note rebuts this, documenting persistent radicular symptoms at discharge.',
+ 'List all pre-existing findings.':
+  'Two pre-existing references: (1) occasional low-back stiffness, resolved with OTC NSAIDs (Lakeside Family Medicine, 08/02/2022–02/11/2023, LFM00041, LFM00046); (2) mild L4-5 disc desiccation with NO herniation on the baseline MRI (Bayview Imaging, 11/19/2023, BIC00007). The clean baseline is favorable: it shows degeneration existed but the herniation did not.',
+ 'What are the strongest causation issues?':
+  'Strongest plaintiff facts: clean pre-incident MRI 4 months before the crash (BIC00007), same-day radicular onset (SME00112), new herniation at the operated level (BIC00019 → HOS00233). Defense will lean on: pre-existing degeneration at L4-5, the 52-day treatment gap, and the missing pain-management/ESI records referenced at HOS00219 — recommend obtaining those records before deposition.',
+};
+
+// ---------- chronology table ----------
+let sortK='dos', sortDir=1, fpp='', ftype='', q='';
+function fmt(e,i){
+  const flag=e.flag?`<div style="margin-top:5px"><span class="pill flag">⚑ ${e.flag}</span></div>`:'';
+  return `<tr>
+    <td><span class="pill ${e.pp}">${e.pp}</span></td>
+    <td><span class="prov">${e.prov}</span>${e.parts?`<div class="parts">${e.parts}</div>`:''}</td>
+    <td style="white-space:nowrap">${e.dosRaw}</td>
+    <td><span class="pill type">${e.type}</span></td>
+    <td style="max-width:420px">${e.sum}${flag}</td>
+    <td style="color:#ff9bb0;font-size:11.5px">${e.notes||''}</td>
+    <td class="bates">${e.bates}</td></tr>`;
+}
+function render(){
+  let list=EVENTS.filter(e=>(!fpp||e.pp===fpp)&&(!ftype||e.type===ftype)&&(!q||JSON.stringify(e).toLowerCase().includes(q)));
+  list.sort((a,b)=>{const ka=a[sortK]||'',kb=b[sortK]||'';return ka<kb?-sortDir:ka>kb?sortDir:0});
+  const useDividers=sortK==='dos'&&sortDir===1&&!fpp;
+  let html='';
+  if(useDividers){
+    const pre=list.filter(e=>e.pp==='pre'),post=list.filter(e=>e.pp==='post');
+    if(pre.length)html+=`<tr class="divider"><td colspan="7">↑ &nbsp;PRE-INCIDENT</td></tr>`+pre.map(fmt).join('');
+    html+=`<tr class="divider loss"><td colspan="7">◆ &nbsp;DATE OF LOSS: 03/15/2024 &nbsp;◆</td></tr>`;
+    if(post.length)html+=`<tr class="divider"><td colspan="7">↓ &nbsp;POST-INCIDENT</td></tr>`+post.map(fmt).join('');
+  } else html=list.map(fmt).join('');
+  document.getElementById('rows').innerHTML=html;
+  document.getElementById('count').textContent=list.length+' shown';
+}
+document.querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{
+  const k=th.dataset.k; if(!k)return;
+  if(sortK===k)sortDir*=-1; else {sortK=k;sortDir=1;} render();
+});
+document.getElementById('q').oninput=e=>{q=e.target.value.toLowerCase();render()};
+document.getElementById('fpp').onchange=e=>{fpp=e.target.value;render()};
+document.getElementById('ftype').onchange=e=>{ftype=e.target.value;render()};
+render();
+
+// ---------- tabs ----------
+document.querySelectorAll('.nav-item').forEach(n=>n.onclick=()=>{
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  n.classList.add('active');
+  document.getElementById('tab-'+n.dataset.tab).classList.add('active');
+});
+
+// ---------- chat ----------
+const chips=document.getElementById('chips'),log=document.getElementById('log');
+Object.keys(CHAT).forEach(qst=>{
+  const c=document.createElement('span');c.className='chip';c.textContent=qst;
+  c.onclick=()=>{
+    log.insertAdjacentHTML('beforeend',`<div class="msg user">${qst}</div>`);
+    setTimeout(()=>{
+      const a=CHAT[qst].replace(/\(([^)]*\b(?:LFM|BIC|SME|CPT|HOS|PHX)\d+[^)]*)\)/g,'(<span class="cite">$1</span>)');
+      log.insertAdjacentHTML('beforeend',`<div class="msg ai">${a}</div>`);
+      log.scrollTop=log.scrollHeight;
+    },450);
+    log.scrollTop=log.scrollHeight;
+  };
+  chips.appendChild(c);
+});
+</script>
+</body>
+</html>
