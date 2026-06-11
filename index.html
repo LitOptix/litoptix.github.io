@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LitOptix MedChron AI — Medical Chronologies. Searchable Records. Trial-Ready Intelligence.</title>
+<meta name="description" content="Upload medical records → AI extracts key medical events → attorney-ready medical chronology → searchable AI chatbot with Bates citations. Local-first: PHI never leaves your machine." />
+<meta property="og:title" content="LitOptix MedChron AI" />
+<meta property="og:description" content="Medical Chronologies. Searchable Records. Trial-Ready Intelligence." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --space-0:#05030f; --space-1:#0b0a1f; --navy:#0b1437; --purple:#3b1d6e; --purple-2:#5b2a9e;
+  --cyan:#22d3ee; --cyan-soft:#67e8f9; --silver:#c7cbd6; --silver-2:#8c93a8;
+  --panel:rgba(20,22,48,.72); --panel-2:rgba(30,33,66,.6);
+  --bd:rgba(120,140,220,.18); --bd-hi:rgba(110,230,255,.45);
+  --text:#e8ecf8; --dim:#9aa3c0; --warn:#ffcf6b; --r:16px;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(1200px 700px at 80% -10%,rgba(91,42,158,.45),transparent 60%),
+    radial-gradient(900px 600px at -10% 10%,rgba(34,211,238,.10),transparent 55%),
+    radial-gradient(1000px 800px at 50% 120%,rgba(59,29,110,.35),transparent 60%),
+    linear-gradient(180deg,var(--space-1) 0%,var(--space-0) 100%);
+  background-attachment:fixed;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.6;background-repeat:repeat;background-size:600px 600px;background-image:
+  radial-gradient(1.5px 1.5px at 20% 30%,rgba(255,255,255,.7),transparent),
+  radial-gradient(1px 1px at 60% 70%,rgba(255,255,255,.5),transparent),
+  radial-gradient(1.2px 1.2px at 80% 20%,rgba(180,230,255,.7),transparent),
+  radial-gradient(1px 1px at 35% 80%,rgba(255,255,255,.4),transparent),
+  radial-gradient(1.5px 1.5px at 90% 60%,rgba(200,200,255,.6),transparent),
+  radial-gradient(1px 1px at 10% 60%,rgba(255,255,255,.4),transparent);}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px}
+a{color:var(--cyan);text-decoration:none}
+
+/* nav */
+nav{display:flex;align-items:center;gap:14px;padding:22px 0}
+.globe{width:36px;height:36px;border-radius:50%;flex:0 0 auto;position:relative;
+  background:radial-gradient(circle at 35% 30%,#6fe9ff 0%,#1f8bbd 35%,#123a6b 70%,#0a1b3a 100%);
+  box-shadow:0 0 18px rgba(34,211,238,.7),inset -4px -6px 10px rgba(0,0,0,.5);}
+.globe::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(34,211,238,.35);animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.12);opacity:.25}}
+.wordmark{font-family:Orbitron;font-weight:800;font-size:20px;letter-spacing:.5px;color:#fff}
+.wordmark b{color:var(--cyan);text-shadow:0 0 10px rgba(34,211,238,.6)}
+.navlinks{margin-left:auto;display:flex;gap:22px;font-size:13.5px;font-weight:600}
+.navlinks a{color:var(--dim)} .navlinks a:hover{color:#fff}
+
+/* hero */
+.hero{text-align:center;padding:72px 0 56px}
+.eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:18px}
+h1{font-family:Orbitron;font-weight:800;font-size:clamp(30px,5.4vw,54px);line-height:1.12;margin:0 0 22px;color:#fff}
+h1 .grad{background:linear-gradient(90deg,var(--cyan),#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tagline{font-size:clamp(15px,2.2vw,19px);color:var(--silver);font-weight:600;letter-spacing:.4px}
+.sub{max-width:680px;margin:18px auto 0;color:var(--dim);font-size:15.5px;line-height:1.65}
+.cta{display:flex;gap:14px;justify-content:center;margin-top:34px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:13px 26px;border-radius:12px;font-weight:700;font-size:14.5px;border:1px solid var(--bd);background:var(--panel-2);color:var(--text);transition:.15s}
+.btn:hover{border-color:var(--bd-hi)}
+.btn.primary{background:linear-gradient(90deg,var(--cyan),#1aa6c9);color:#04222b;border:none;box-shadow:0 0 22px rgba(34,211,238,.45)}
+.btn.primary:hover{box-shadow:0 0 34px rgba(34,211,238,.75)}
+.flow{margin-top:46px;font-size:14px;color:var(--silver);display:flex;justify-content:center;gap:10px;flex-wrap:wrap;align-items:center}
+.flow .step{background:var(--panel);border:1px solid var(--bd);border-radius:999px;padding:9px 18px}
+.flow .arrow{color:var(--cyan)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:26px 0 0}
+.stat{background:var(--panel);border:1px solid var(--bd);border-radius:var(--r);padding:22px;text-align:center;backdrop-filter:blur(8px)}
+.stat .n{font-family:Orbitron;font-size:30px;color:#fff;text-shadow:0 0 16px rgba(34,211,238,.35)}
+.stat .l{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1.5px;margin-top:6px}
+.stats-note{text-align:center;color:var(--silver-2);font-size:12px;margin-top:12px;font-style:italic}
+
+/* sections */
+section{padding:72px 0 10px}
+h2{font-family:Orbitron;font-size:clamp(22px,3.4vw,32px);color:#fff;margin:0 0 10px;text-align:center}
+.lead{text-align:center;color:var(--dim);max-width:640px;margin:0 auto 42px;font-size:15px;line-height:1.6}
+
+/* features */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:var(--panel);border:1px solid var(--bd);border-radius:var(--r);padding:26px;backdrop-filter:blur(8px);transition:.15s}
+.card:hover{border-color:var(--bd-hi);transform:translateY(-3px);box-shadow:0 0 28px rgba(34,211,238,.14)}
+.card .ico{font-size:26px;margin-bottom:12px}
+.card h3{margin:0 0 9px;font-size:16.5px;color:#fff}
+.card p{margin:0;font-size:13.5px;color:var(--dim);line-height:1.6}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:1px;margin-bottom:10px}
+.pill.core{background:rgba(34,211,238,.14);color:var(--cyan-soft);border:1px solid rgba(34,211,238,.4)}
+.pill.soon{background:rgba(255,207,107,.12);color:var(--warn);border:1px solid rgba(255,207,107,.4)}
+
+/* demo table */
+.demo{background:var(--panel);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;backdrop-filter:blur(8px)}
+.demo-head{padding:14px 20px;display:flex;gap:8px;align-items:center;border-bottom:1px solid var(--bd);font-size:12px;color:var(--dim)}
+.dot{width:10px;height:10px;border-radius:50%}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th{text-align:left;padding:11px 14px;font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:#dfe6ff;background:linear-gradient(180deg,var(--purple),#2a1550);border-bottom:1px solid var(--bd-hi);white-space:nowrap}
+.tbl td{padding:11px 14px;border-bottom:1px solid rgba(120,140,220,.10);vertical-align:top;line-height:1.5;color:var(--text)}
+.tbl tr:hover td{background:rgba(34,211,238,.05)}
+.divider td{background:linear-gradient(90deg,rgba(11,20,55,.95),rgba(59,29,110,.6));text-align:center;font-family:Orbitron;font-size:11px;letter-spacing:2px;color:#fff;padding:8px}
+.divider.loss td{background:linear-gradient(90deg,var(--purple-2),var(--cyan));color:#051018;font-weight:700}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:10.5px;font-weight:600}
+.tag.pre{background:rgba(107,120,184,.18);color:#aab6ee;border:1px solid rgba(107,120,184,.4)}
+.tag.post{background:rgba(34,211,238,.14);color:var(--cyan-soft);border:1px solid rgba(34,211,238,.4)}
+.tag.flag{background:rgba(255,207,107,.14);color:var(--warn);border:1px solid rgba(255,207,107,.4)}
+.bates{color:var(--silver-2);font-family:ui-monospace,monospace;font-size:11px}
+.demo-note{padding:10px 20px;font-size:11.5px;color:var(--silver-2);font-style:italic;border-top:1px solid var(--bd)}
+
+/* chat demo */
+.chat{max-width:720px;margin:26px auto 0;display:flex;flex-direction:column;gap:12px}
+.msg{padding:13px 17px;border-radius:14px;font-size:13.5px;line-height:1.6;max-width:85%}
+.msg.q{align-self:flex-end;background:linear-gradient(90deg,var(--cyan),#1aa6c9);color:#04222b;border-bottom-right-radius:4px;font-weight:600}
+.msg.a{align-self:flex-start;background:var(--panel-2);border:1px solid var(--bd);border-bottom-left-radius:4px;color:var(--text)}
+.msg.a .cite{color:var(--cyan-soft);font-family:ui-monospace,monospace;font-size:12px}
+
+/* privacy */
+.privacy{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px}
+
+/* footer */
+footer{margin-top:84px;border-top:1px solid var(--bd);padding:34px 0 46px;text-align:center;color:var(--silver-2);font-size:12.5px;line-height:1.8}
+footer .tag-line{font-style:italic;color:var(--silver)}
+
+@media(max-width:840px){.grid,.privacy{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.grid,.privacy{grid-template-columns:1fr}.navlinks{display:none}.tbl .hide-m{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav>
+  <div class="globe"></div>
+  <div class="wordmark">LIT<b>OPTIX</b></div>
+  <div class="navlinks">
+    <a href="#features">Features</a>
+    <a href="#demo">Demo</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="https://github.com/LitOptix/LitOptix-MedChron-AI">GitHub</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow">LitOptix MedChron AI</div>
+  <h1>Medical Chronologies.<br/><span class="grad">Searchable Records.</span><br/>Trial-Ready Intelligence.</h1>
+  <p class="tagline">Turn a banker's box of medical records into an attorney-ready chronology — with every event cited to its Bates page.</p>
+  <p class="sub">Upload medical records → AI extracts every medical event → a polished, sortable chronology splits pre- and post-incident treatment → an AI chatbot answers record-based questions with citations. Built for personal-injury and med-mal litigation.</p>
+  <div class="cta">
+    <a class="btn primary" href="https://github.com/LitOptix/LitOptix-MedChron-AI">⚛ Get MedChron AI</a>
+    <a class="btn" href="#demo">See it in action ↓</a>
+  </div>
+  <div class="flow">
+    <span class="step">📁 Upload records</span><span class="arrow">→</span>
+    <span class="step">⚛ AI extracts events</span><span class="arrow">→</span>
+    <span class="step">☰ Chronology builds itself</span><span class="arrow">→</span>
+    <span class="step">⇪ Word · Excel · Chat</span>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n">1,070+</div><div class="l">Pages per case, proven</div></div>
+    <div class="stat"><div class="n">518</div><div class="l">Events extracted</div></div>
+    <div class="stat"><div class="n">52<span style="font-size:18px">min</span></div><div class="l">Full case processed</div></div>
+    <div class="stat"><div class="n">100%</div><div class="l">Records kept local</div></div>
+  </div>
+  <div class="stats-note">Benchmark from a real 17-record trial-exhibit set — medical, surgical, imaging, and pharmacy records, including image-only scans.</div>
+</header>
+
+<section id="features">
+  <h2>Six modules. One workflow.</h2>
+  <p class="lead">Everything between "the records arrived" and "the chronology is on counsel's desk."</p>
+  <div class="grid">
+    <div class="card"><span class="pill core">CORE</span><div class="ico">◫</div><h3>Case Dashboard</h3><p>Set up each matter with plaintiff, DOB, date of loss, complaints, provider list, and Bates range. Every case lives in its own workspace.</p></div>
+    <div class="card"><span class="pill core">CORE</span><div class="ico">⚛</div><h3>AI Record Processing</h3><p>Extracts provider, date of service, complaints, diagnoses, imaging findings, procedures, medications, treatment plans, pre-existing conditions, and the Bates/page citation for every event. Scanned, image-only pages are read visually.</p></div>
+    <div class="card"><span class="pill core">CORE</span><div class="ico">☰</div><h3>Chronology Builder</h3><p>A litigation-grade table sortable by date, provider, event type, body part, or Bates — with an automatic ↑ PRE-INCIDENT / Date of Loss / ↓ POST-INCIDENT split and inline editing.</p></div>
+    <div class="card"><span class="pill core">CORE</span><div class="ico">⇪</div><h3>Attorney-Ready Export</h3><p>One-click Word and Excel chronologies that mirror your firm's deliverable format, including a Causation &amp; Gaps analysis worksheet.</p></div>
+    <div class="card"><span class="pill core">CORE</span><div class="ico">✸</div><h3>AI Chatbot</h3><p>"When was the first lumbar complaint?" "What records support surgery?" Answers come only from the records — cited to provider, DOS, and Bates.</p></div>
+    <div class="card"><span class="pill core">CORE</span><div class="ico">✦</div><h3>Premium Insights</h3><p>Causation flags, treatment-gap detection, pre-existing condition overlap by body part, inconsistent-history alerts, and a missing-records detector.</p></div>
+  </div>
+</section>
+
+<section id="demo">
+  <h2>The chronology, the way attorneys read it</h2>
+  <p class="lead">Sortable, filterable, and split at the date of loss — every row cited to its source page.</p>
+  <div class="demo">
+    <div class="demo-head">
+      <span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span>
+      <span style="margin-left:8px">Sample v. Defendant &nbsp;·&nbsp; Chronology &nbsp;·&nbsp; DOL 03/15/2024</span>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>P/P</th><th>Service Provider</th><th>DOS</th><th class="hide-m">Type</th><th>Complaints / Procedures / Impressions / Findings</th><th class="hide-m">Bates</th></tr></thead>
+      <tbody>
+        <tr class="divider"><td colspan="6">↑ &nbsp;PRE-INCIDENT</td></tr>
+        <tr><td><span class="tag pre">pre</span></td><td><b>Lakeside Family Medicine</b></td><td>08/02/2022</td><td class="hide-m">Office Visit</td><td>Annual physical. Occasional low-back stiffness after yard work; no radicular symptoms. No imaging ordered.</td><td class="hide-m"><span class="bates">LFM00041</span></td></tr>
+        <tr><td><span class="tag pre">pre</span></td><td><b>Bayview Imaging Center</b></td><td>11/19/2023</td><td class="hide-m">Imaging</td><td>MRI lumbar spine: mild L4-5 disc desiccation, no herniation, no stenosis. <span class="tag flag">⚑ Pre-existing baseline</span></td><td class="hide-m"><span class="bates">BIC00007</span></td></tr>
+        <tr class="divider loss"><td colspan="6">◆ &nbsp;DATE OF LOSS: 03/15/2024 &nbsp;◆</td></tr>
+        <tr class="divider"><td colspan="6">↓ &nbsp;POST-INCIDENT</td></tr>
+        <tr><td><span class="tag post">post</span></td><td><b>St. Mercy Emergency Dept.</b></td><td>03/15/2024</td><td class="hide-m">ER Visit</td><td>MVC same day. Severe low-back pain radiating to left leg, 9/10. XR negative for fracture. Discharged with muscle relaxants, ortho referral.</td><td class="hide-m"><span class="bates">SME00112</span></td></tr>
+        <tr><td><span class="tag post">post</span></td><td><b>Bayview Imaging Center</b></td><td>04/02/2024</td><td class="hide-m">Imaging</td><td>MRI lumbar spine: new L4-5 posterior disc herniation contacting the left L5 nerve root; moderate canal stenosis. <span class="tag flag">⚑ New pathology vs. 11/2023 baseline</span></td><td class="hide-m"><span class="bates">BIC00019</span></td></tr>
+        <tr><td><span class="tag post">post</span></td><td><b>Harborview Ortho &amp; Spine</b></td><td>07/28/2024</td><td class="hide-m">Surgery</td><td>L4-5 microdiscectomy following failed conservative care (12 PT sessions, 2 ESIs). Post-op: radicular pain resolved. <span class="tag flag">⚑ Treatment gap 05/10 → 07/01 (52 days)</span></td><td class="hide-m"><span class="bates">HOS00233</span></td></tr>
+      </tbody>
+    </table>
+    <div class="demo-note">Illustrative sample — all names, providers, dates, and findings are fictional.</div>
+  </div>
+
+  <div class="chat">
+    <div class="msg q">What records support causation for the surgery?</div>
+    <div class="msg a">Three records form the causation chain: (1) the pre-incident MRI showing only mild degeneration with no herniation <span class="cite">(Bayview Imaging, 11/19/2023, BIC00007)</span>; (2) the same-day ER presentation with new radicular symptoms <span class="cite">(St. Mercy ED, 03/15/2024, SME00112)</span>; and (3) the post-incident MRI documenting a new L4-5 herniation contacting the L5 nerve root <span class="cite">(Bayview Imaging, 04/02/2024, BIC00019)</span> — the level later operated on <span class="cite">(Harborview Ortho, 07/28/2024, HOS00233)</span>. Note one defense issue: a 52-day treatment gap before the surgical consult.</div>
+  </div>
+</section>
+
+<section id="privacy">
+  <h2>Built local-first, because it's PHI</h2>
+  <p class="lead">Medical records are the most sensitive documents a firm holds. MedChron AI treats them that way.</p>
+  <div class="privacy">
+    <div class="card"><div class="ico">🖥</div><h3>Records never leave your machine</h3><p>Files are read in place from your own folders — nothing is uploaded to a cloud service. Case data lives in local files you control.</p></div>
+    <div class="card"><div class="ico">🔑</div><h3>Your AI key, your control</h3><p>Extraction runs on your own Claude API key. Only extracted record text is sent for analysis — never the documents themselves.</p></div>
+    <div class="card"><div class="ico">🧾</div><h3>Citations you can verify</h3><p>Every extracted event carries its Bates/page reference, so any entry can be checked against the source record in seconds.</p></div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <h2>Roadmap</h2>
+  <p class="lead">Shipping next for trial teams.</p>
+  <div class="grid">
+    <div class="card"><span class="pill soon">PHASE 2</span><div class="ico">🗓</div><h3>Trial Timeline & PowerPoint Exhibits</h3><p>One-click visual timeline of key events, exported as exhibit-ready callout slides.</p></div>
+    <div class="card"><span class="pill soon">PHASE 2</span><div class="ico">🎤</div><h3>Deposition Prep Summaries</h3><p>Provider-by-provider summaries with the questions each record raises for the witness.</p></div>
+    <div class="card"><span class="pill soon">PHASE 2</span><div class="ico">⚖</div><h3>Defense Causation Report</h3><p>Pre-existing overlap, treatment gaps, and inconsistent histories framed as anticipated defense arguments — with rebuttal record cites.</p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="tag-line">Medical Chronologies. Searchable Records. Trial-Ready Intelligence.</div>
+  <div style="margin-top:8px">© 2026 LitOptix · MedChron AI · <a href="https://github.com/LitOptix/LitOptix-MedChron-AI">GitHub</a></div>
+  <div style="margin-top:6px;max-width:640px;margin-left:auto;margin-right:auto">MedChron AI assists with record review and chronology preparation. It does not provide legal or medical advice, and all output should be verified against source records by qualified professionals.</div>
+</footer>
+
+</div>
+</body>
+</html>
